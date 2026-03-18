@@ -758,25 +758,12 @@
       return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
     }
 
-    const BEEHIIV_PUB_ID = 'pub_6e79921b-060e-41a0-98fb-cbdc0c3ea6c9';
-    const BEEHIIV_API_KEY = 'OISgEFS2Hg2zuprlMJbLBUDYxKaPGIJuIvKZyTeORIDeKxBZVLYbAJaOQkO5HyhF';
-
     async function subscribeToBeehiiv(email) {
-      const res = await fetch(
-        `https://api.beehiiv.com/v2/publications/${BEEHIIV_PUB_ID}/subscriptions`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${BEEHIIV_API_KEY}`
-          },
-          body: JSON.stringify({
-            email: email.trim(),
-            reactivate_existing: false,
-            send_welcome_email: true
-          })
-        }
-      );
+      const res = await fetch('https://beehiiv-proxy.sgarg-94.workers.dev', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email.trim() })
+      });
       if (!res.ok) throw new Error('Subscription failed');
     }
 
