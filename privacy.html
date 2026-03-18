@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Privacy Policy — The World Unravelled</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            cream:    '#F5F4ED',
+            blush:    '#F8E5E5',
+            lavender: '#CBCEEA',
+            sage:     '#DEF1D0',
+            sky:      '#CDEBF1',
+            muted:    '#5D5D5A',
+            ink:      '#1C1C1A',
+          },
+          fontFamily: {
+            display: ['"Cormorant Garamond"', 'Georgia', 'serif'],
+            body:    ['Inter', 'system-ui', 'sans-serif'],
+          },
+        },
+      },
+    };
+  </script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: #F5F4ED;
+      color: #1C1C1A;
+      font-family: 'Inter', system-ui, sans-serif;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Grain texture overlay ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 100;
+      opacity: 0.032;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+    }
+
+    /* ── Background radial gradients ── */
+    .bg-canvas {
+      background-color: #F5F4ED;
+      background-image:
+        radial-gradient(ellipse 70% 60% at 15% 20%,  rgba(203,206,234,0.38) 0%, transparent 65%),
+        radial-gradient(ellipse 55% 50% at 85% 15%,  rgba(248,229,229,0.30) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 55% at 70% 85%,  rgba(222,241,208,0.28) 0%, transparent 60%),
+        radial-gradient(ellipse 45% 40% at 10% 80%,  rgba(205,235,241,0.25) 0%, transparent 55%);
+    }
+
+    .display-heading {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+    }
+
+    /* ── Nav link hover ── */
+    .nav-link {
+      position: relative;
+      font-size: 13px;
+      font-weight: 400;
+      letter-spacing: 0.05em;
+      color: #5D5D5A;
+      text-decoration: none;
+      transition: color 0.18s ease;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0; right: 0;
+      height: 1px;
+      background: #1C1C1A;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.22s cubic-bezier(0.34,1.2,0.64,1);
+    }
+    .nav-link:hover { color: #1C1C1A; }
+    .nav-link:hover::after { transform: scaleX(1); }
+    .nav-link:focus-visible { outline: 2px solid #CBCEEA; border-radius: 2px; }
+
+    /* ── Divider ── */
+    .thin-rule {
+      border: none;
+      border-top: 1px solid rgba(93,93,90,0.12);
+    }
+
+    /* ── Privacy prose ── */
+    .prose-section {
+      padding: 48px 0;
+      border-bottom: 1px solid rgba(93,93,90,0.08);
+    }
+    .prose-section:last-child {
+      border-bottom: none;
+    }
+    .prose-label {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 13px;
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #5D5D5A;
+      margin-bottom: 12px;
+    }
+    .prose-heading {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 28px;
+      font-weight: 600;
+      color: #1C1C1A;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      margin-bottom: 20px;
+    }
+    .prose-body {
+      font-size: 15px;
+      line-height: 1.82;
+      color: #5D5D5A;
+      font-weight: 300;
+      max-width: 640px;
+    }
+    .prose-body p + p { margin-top: 16px; }
+    .prose-body ul {
+      margin-top: 12px;
+      padding-left: 0;
+      list-style: none;
+    }
+    .prose-body ul li {
+      position: relative;
+      padding-left: 20px;
+      margin-bottom: 8px;
+    }
+    .prose-body ul li::before {
+      content: '—';
+      position: absolute;
+      left: 0;
+      color: rgba(93,93,90,0.40);
+      font-weight: 300;
+    }
+    .prose-body a {
+      color: #1C1C1A;
+      text-decoration: underline;
+      text-decoration-color: rgba(93,93,90,0.30);
+      text-underline-offset: 3px;
+      transition: text-decoration-color 0.18s ease;
+    }
+    .prose-body a:hover {
+      text-decoration-color: #1C1C1A;
+    }
+
+    /* ── Responsive nav ── */
+    .nav-links-wrap { display: none; align-items: center; gap: 2rem; }
+    .nav-cta-wrap   { display: none; }
+    .nav-mobile-btn { display: flex; }
+    .footer-inner   { display: flex; flex-direction: column; align-items: flex-start; gap: 2rem; justify-content: space-between; }
+
+    @media (min-width: 768px) {
+      .nav-links-wrap { display: flex; }
+      .nav-cta-wrap   { display: block; }
+      .nav-mobile-btn { display: none; }
+      .footer-inner   { flex-direction: row; align-items: center; }
+    }
+  </style>
+</head>
+
+<body class="bg-canvas min-h-screen">
+
+  <!-- ════════════════════════════════════
+       NAV
+  ════════════════════════════════════ -->
+  <nav class="fixed top-0 left-0 right-0 z-50" style="backdrop-filter: blur(16px); background: rgba(245,244,237,0.80); border-bottom: 1px solid rgba(93,93,90,0.08);">
+    <div class="max-w-6xl mx-auto px-6 md:px-10 flex items-center justify-between" style="height: 64px;">
+
+      <!-- Logo -->
+      <a href="/" class="flex items-center gap-3" style="text-decoration:none;" aria-label="The World Unravelled home">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <circle cx="14" cy="14" r="12.5" stroke="#1C1C1A" stroke-width="1.5"/>
+          <ellipse cx="14" cy="14" rx="6" ry="12.5" stroke="#1C1C1A" stroke-width="1.5"/>
+          <line x1="1.5" y1="10" x2="26.5" y2="10" stroke="#1C1C1A" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="1.5" y1="18" x2="26.5" y2="18" stroke="#1C1C1A" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        <span style="font-family:'Cormorant Garamond',Georgia,serif; font-weight:600; font-size:17px; letter-spacing:-0.01em; color:#1C1C1A; line-height:1;">The World Unravelled</span>
+      </a>
+
+      <!-- Nav links -->
+      <div class="nav-links-wrap">
+        <a href="/#about" class="nav-link">About</a>
+        <a href="/#topics" class="nav-link">Topics</a>
+        <a href="/#subscribe-cta" class="nav-link">Subscribe</a>
+      </div>
+
+      <!-- CTA -->
+      <a href="/#subscribe-cta" class="nav-cta-wrap" style="font-family:'Inter',sans-serif; font-size:13px; font-weight:500; letter-spacing:0.06em; text-transform:uppercase; color:#1C1C1A; text-decoration:none; padding:8px 20px; border:1.5px solid rgba(28,28,26,0.20); border-radius:5px; transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease;"
+        onmouseover="this.style.background='#1C1C1A'; this.style.color='#F5F4ED';"
+        onmouseout="this.style.background='transparent'; this.style.color='#1C1C1A';">
+        Join Free
+      </a>
+
+      <!-- Mobile menu icon -->
+      <button class="nav-mobile-btn flex-col gap-[5px] p-2" aria-label="Toggle menu" onclick="toggleMobileMenu()">
+        <span style="display:block; width:20px; height:1.5px; background:#1C1C1A;"></span>
+        <span style="display:block; width:20px; height:1.5px; background:#1C1C1A;"></span>
+        <span style="display:block; width:14px; height:1.5px; background:#1C1C1A;"></span>
+      </button>
+    </div>
+
+    <!-- Mobile dropdown -->
+    <div id="mobileMenu" style="display:none; background:rgba(245,244,237,0.96); border-top:1px solid rgba(93,93,90,0.08); padding:16px 24px 20px;">
+      <div class="flex flex-col gap-4">
+        <a href="/#about"         class="nav-link" onclick="toggleMobileMenu()">About</a>
+        <a href="/#topics"        class="nav-link" onclick="toggleMobileMenu()">Topics</a>
+        <a href="/#subscribe-cta" class="nav-link" onclick="toggleMobileMenu()">Subscribe</a>
+      </div>
+    </div>
+  </nav>
+
+
+  <!-- ════════════════════════════════════
+       PAGE HEADER
+  ════════════════════════════════════ -->
+  <section style="padding-top: 128px; padding-bottom: 64px;">
+    <div class="max-w-6xl mx-auto px-6 md:px-10">
+
+      <p class="prose-label">Legal</p>
+      <h1 class="display-heading" style="font-size: clamp(44px, 5vw, 72px); color:#1C1C1A; max-width: 600px;">
+        Privacy Policy
+      </h1>
+      <p style="margin-top: 20px; font-size:15px; line-height:1.7; color:rgba(93,93,90,0.65); font-family:'Inter',sans-serif; font-weight:300;">
+        Last updated: March 2026
+      </p>
+
+      <hr class="thin-rule" style="margin-top: 48px;" />
+    </div>
+  </section>
+
+
+  <!-- ════════════════════════════════════
+       INTRO
+  ════════════════════════════════════ -->
+  <section style="padding-bottom: 0;">
+    <div class="max-w-6xl mx-auto px-6 md:px-10">
+      <div class="prose-section">
+        <div class="prose-body" style="max-width:700px;">
+          <p>
+            <em style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:17px;color:#1C1C1A;">The World Unravelled</em> is a free weekly newsletter. We take your privacy seriously and keep things simple: we collect only what we need, use it only to send you the newsletter, and never sell it to anyone. Full stop.
+          </p>
+          <p>
+            This policy explains what data we collect, how we use it, and your rights as a reader — wherever in the world you are.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ════════════════════════════════════
+       SECTIONS
+  ════════════════════════════════════ -->
+  <section>
+    <div class="max-w-6xl mx-auto px-6 md:px-10">
+
+      <!-- 1. What we collect -->
+      <div class="prose-section">
+        <p class="prose-label">01</p>
+        <h2 class="prose-heading">What we collect</h2>
+        <div class="prose-body">
+          <p>When you subscribe, we collect only your email address. That's it. We don't ask for your name, location, age, or any other personal details.</p>
+          <p>We may also receive basic engagement data through our email platform — such as whether an email was opened or a link was clicked. This is standard for any email newsletter and helps us understand what readers find useful.</p>
+        </div>
+      </div>
+
+      <!-- 2. How we use it -->
+      <div class="prose-section">
+        <p class="prose-label">02</p>
+        <h2 class="prose-heading">How we use your data</h2>
+        <div class="prose-body">
+          <p>Your email address is used for one purpose only: to send you <em style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:16px;color:#1C1C1A;">The World Unravelled</em> newsletter each week.</p>
+          <p>We do not use your data to:</p>
+          <ul>
+            <li>Send you advertising or sponsored content</li>
+            <li>Build advertising profiles</li>
+            <li>Contact you about anything unrelated to the newsletter</li>
+            <li>Sell, rent, or share your information with third parties for their own marketing</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 3. Third-party tools -->
+      <div class="prose-section">
+        <p class="prose-label">03</p>
+        <h2 class="prose-heading">Third-party tools</h2>
+        <div class="prose-body">
+          <p>We use <a href="https://www.beehiiv.com/privacy" target="_blank" rel="noopener">Beehiiv</a> to manage subscriptions and deliver the newsletter. When you subscribe, your email address is stored securely on Beehiiv's platform. Beehiiv is GDPR-compliant and maintains its own privacy policy, which you can read at beehiiv.com/privacy.</p>
+          <p>We do not use any other third-party marketing, tracking, or analytics tools on this website.</p>
+        </div>
+      </div>
+
+      <!-- 4. Email tracking -->
+      <div class="prose-section">
+        <p class="prose-label">04</p>
+        <h2 class="prose-heading">Email tracking</h2>
+        <div class="prose-body">
+          <p>Like most newsletters, our emails include standard tracking pixels and link tracking provided by Beehiiv. This tells us things like open rates and click-through rates in aggregate — helping us understand what topics resonate with readers.</p>
+          <p>If you'd prefer not to be tracked, most email clients allow you to block remote images, which prevents open tracking. You can also contact us to be removed entirely.</p>
+        </div>
+      </div>
+
+      <!-- 5. International readers -->
+      <div class="prose-section">
+        <p class="prose-label">05</p>
+        <h2 class="prose-heading">International readers &amp; your rights</h2>
+        <div class="prose-body">
+          <p>We have readers all over the world, and we respect the privacy laws that apply to you — including GDPR (European Union), UK GDPR, PIPEDA (Canada), PDPA (Singapore &amp; Thailand), LGPD (Brazil), and others.</p>
+          <p>Wherever you are, you have the right to:</p>
+          <ul>
+            <li>Know what data we hold about you</li>
+            <li>Request a copy of your data</li>
+            <li>Ask us to correct or delete your data</li>
+            <li>Withdraw your consent at any time by unsubscribing</li>
+            <li>Object to how your data is being used</li>
+          </ul>
+          <p>To exercise any of these rights, email us at the address below. We'll respond within 30 days.</p>
+        </div>
+      </div>
+
+      <!-- 6. Unsubscribing -->
+      <div class="prose-section">
+        <p class="prose-label">06</p>
+        <h2 class="prose-heading">Unsubscribing</h2>
+        <div class="prose-body">
+          <p>Every email we send includes an unsubscribe link in the footer. Click it and you'll be removed immediately — no forms, no friction.</p>
+          <p>Once unsubscribed, we retain your email address on a suppression list to ensure we don't accidentally re-add you. If you'd like it deleted entirely, just email us.</p>
+        </div>
+      </div>
+
+      <!-- 7. Data retention -->
+      <div class="prose-section">
+        <p class="prose-label">07</p>
+        <h2 class="prose-heading">Data retention</h2>
+        <div class="prose-body">
+          <p>We retain your email address for as long as you are subscribed to the newsletter. If you unsubscribe, your data is moved to a suppression list and not used for any further communications. You can request full deletion at any time by contacting us directly.</p>
+        </div>
+      </div>
+
+      <!-- 8. Security -->
+      <div class="prose-section">
+        <p class="prose-label">08</p>
+        <h2 class="prose-heading">Security</h2>
+        <div class="prose-body">
+          <p>Your data is stored on Beehiiv's infrastructure, which uses industry-standard encryption and security practices. We do not store any subscriber data ourselves beyond what Beehiiv manages on our behalf.</p>
+        </div>
+      </div>
+
+      <!-- 9. Changes -->
+      <div class="prose-section">
+        <p class="prose-label">09</p>
+        <h2 class="prose-heading">Changes to this policy</h2>
+        <div class="prose-body">
+          <p>If we ever make meaningful changes to this policy, we'll update the date at the top of this page. We may also include a note in the newsletter. We won't make changes that reduce your rights without letting you know.</p>
+        </div>
+      </div>
+
+      <!-- 10. Contact -->
+      <div class="prose-section">
+        <p class="prose-label">10</p>
+        <h2 class="prose-heading">Questions?</h2>
+        <div class="prose-body">
+          <p>If you have any questions about this policy, your data, or anything else — just reach out. We're a small, independent newsletter and we actually read our emails.</p>
+          <p style="margin-top:20px;">
+            <a href="mailto:hello@theworldunravelled.com" style="font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;color:#1C1C1A;text-decoration:none;border-bottom:1.5px solid rgba(28,28,26,0.20);padding-bottom:2px;transition:border-color 0.18s ease;"
+              onmouseover="this.style.borderColor='#1C1C1A'"
+              onmouseout="this.style.borderColor='rgba(28,28,26,0.20)'">
+              hello@theworldunravelled.com
+            </a>
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ════════════════════════════════════
+       FOOTER
+  ════════════════════════════════════ -->
+  <footer style="padding:40px 0 48px; border-top:1px solid rgba(93,93,90,0.10); margin-top: 40px;">
+    <div class="max-w-6xl mx-auto px-6 footer-inner">
+
+      <!-- Logo -->
+      <div class="flex items-center gap-3">
+        <svg width="22" height="22" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <circle cx="14" cy="14" r="12.5" stroke="#5D5D5A" stroke-width="1.5"/>
+          <ellipse cx="14" cy="14" rx="6" ry="12.5" stroke="#5D5D5A" stroke-width="1.5"/>
+          <line x1="1.5" y1="10" x2="26.5" y2="10" stroke="#5D5D5A" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="1.5" y1="18" x2="26.5" y2="18" stroke="#5D5D5A" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        <span style="font-family:'Cormorant Garamond',serif;font-weight:600;font-size:15px;letter-spacing:-0.01em;color:#5D5D5A;">The World Unravelled</span>
+      </div>
+
+      <!-- Links -->
+      <div class="flex gap-6">
+        <a href="privacy.html" class="nav-link" style="font-size:12px;">Privacy</a>
+        <a href="#" class="nav-link" style="font-size:12px;">Contact</a>
+      </div>
+
+      <!-- Copyright -->
+      <p style="font-size:12px;color:rgba(93,93,90,0.45);font-family:'Inter',sans-serif;">© 2025 The World Unravelled. All rights reserved.</p>
+    </div>
+  </footer>
+
+
+  <script>
+    function toggleMobileMenu() {
+      const menu = document.getElementById('mobileMenu');
+      menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+    }
+  </script>
+
+</body>
+</html>
