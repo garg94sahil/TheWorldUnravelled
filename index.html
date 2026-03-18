@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The World Unravelled</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            cream:    '#F5F4ED',
+            blush:    '#F8E5E5',
+            lavender: '#CBCEEA',
+            sage:     '#DEF1D0',
+            sky:      '#CDEBF1',
+            muted:    '#5D5D5A',
+            ink:      '#1C1C1A',
+          },
+          fontFamily: {
+            display: ['"Cormorant Garamond"', 'Georgia', 'serif'],
+            body:    ['Inter', 'system-ui', 'sans-serif'],
+          },
+        },
+      },
+    };
+  </script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: #F5F4ED;
+      color: #1C1C1A;
+      font-family: 'Inter', system-ui, sans-serif;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Grain texture overlay ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 100;
+      opacity: 0.032;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+    }
+
+    /* ── Background radial gradients ── */
+    .bg-canvas {
+      background-color: #F5F4ED;
+      background-image:
+        radial-gradient(ellipse 70% 60% at 15% 20%,  rgba(203,206,234,0.38) 0%, transparent 65%),
+        radial-gradient(ellipse 55% 50% at 85% 15%,  rgba(248,229,229,0.30) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 55% at 70% 85%,  rgba(222,241,208,0.28) 0%, transparent 60%),
+        radial-gradient(ellipse 45% 40% at 10% 80%,  rgba(205,235,241,0.25) 0%, transparent 55%);
+    }
+
+    /* ── Display headline ── */
+    .display-heading {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+    }
+
+    /* ── Layered card shadow ── */
+    .card-shadow {
+      box-shadow:
+        0 1px 2px rgba(93,93,90,0.04),
+        0 4px 12px rgba(93,93,90,0.06),
+        0 12px 32px rgba(93,93,90,0.07);
+    }
+
+    /* ── Input ── */
+    .email-input {
+      background: rgba(255,255,255,0.72);
+      backdrop-filter: blur(12px);
+      border: 1.5px solid rgba(93,93,90,0.15);
+      border-radius: 6px;
+      padding: 14px 20px;
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      color: #1C1C1A;
+      width: 100%;
+      outline: none;
+      transition: border-color 0.2s cubic-bezier(0.4,0,0.2,1),
+                  box-shadow    0.2s cubic-bezier(0.4,0,0.2,1);
+    }
+    .email-input::placeholder { color: rgba(93,93,90,0.5); }
+    .email-input:focus {
+      border-color: #CBCEEA;
+      box-shadow: 0 0 0 3px rgba(203,206,234,0.30);
+    }
+
+    /* ── CTA button ── */
+    .cta-btn {
+      background: #1C1C1A;
+      color: #F5F4ED;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 14px 32px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      white-space: nowrap;
+      position: relative;
+      overflow: hidden;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.18s cubic-bezier(0.34,1.56,0.64,1),
+                  box-shadow 0.18s cubic-bezier(0.34,1.56,0.64,1);
+      box-shadow:
+        0 2px 4px rgba(28,28,26,0.12),
+        0 6px 16px rgba(28,28,26,0.14);
+    }
+    .cta-btn::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(203,206,234,0.18) 0%, transparent 60%);
+      opacity: 0;
+      transition: opacity 0.2s ease;
+    }
+    .cta-btn:hover {
+      transform: translateY(-2px) scale(1.01);
+      box-shadow:
+        0 4px 8px rgba(28,28,26,0.14),
+        0 12px 28px rgba(28,28,26,0.18);
+    }
+    .cta-btn:hover::after { opacity: 1; }
+    .cta-btn:active {
+      transform: translateY(0) scale(0.99);
+      box-shadow:
+        0 1px 3px rgba(28,28,26,0.10),
+        0 4px 10px rgba(28,28,26,0.12);
+    }
+    .cta-btn:focus-visible {
+      outline: 2.5px solid #CBCEEA;
+      outline-offset: 3px;
+    }
+
+    /* ── Pill tags ── */
+    .pill {
+      display: inline-block;
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 5px 12px;
+      border-radius: 999px;
+      border: 1px solid;
+    }
+
+    /* ── Doodle arrow SVG animations ── */
+    .doodle-arrow {
+      opacity: 0;
+      transform: translateY(8px) rotate(-5deg);
+      animation: doodleFadeIn 0.9s cubic-bezier(0.34,1.56,0.64,1) forwards;
+    }
+    .doodle-arrow:nth-child(2) { animation-delay: 0.15s; }
+    .doodle-arrow:nth-child(3) { animation-delay: 0.30s; }
+
+    @keyframes doodleFadeIn {
+      to { opacity: 1; transform: translateY(0) rotate(0deg); }
+    }
+
+    /* ── Hero text fade-up ── */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(24px);
+      animation: fadeUp 0.9s cubic-bezier(0.34,1.2,0.64,1) forwards;
+    }
+    .fade-up-1 { animation-delay: 0.1s; }
+    .fade-up-2 { animation-delay: 0.25s; }
+    .fade-up-3 { animation-delay: 0.40s; }
+    .fade-up-4 { animation-delay: 0.55s; }
+    .fade-up-5 { animation-delay: 0.70s; }
+
+    @keyframes fadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Topic card hover ── */
+    .topic-card {
+      transition: transform 0.22s cubic-bezier(0.34,1.4,0.64,1),
+                  box-shadow 0.22s cubic-bezier(0.34,1.4,0.64,1);
+    }
+    .topic-card:hover {
+      transform: translateY(-4px);
+      box-shadow:
+        0 2px 4px rgba(93,93,90,0.06),
+        0 8px 20px rgba(93,93,90,0.10),
+        0 20px 48px rgba(93,93,90,0.09);
+    }
+
+    /* ── Nav link hover ── */
+    .nav-link {
+      position: relative;
+      font-size: 13px;
+      font-weight: 400;
+      letter-spacing: 0.05em;
+      color: #5D5D5A;
+      text-decoration: none;
+      transition: color 0.18s ease;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0; right: 0;
+      height: 1px;
+      background: #1C1C1A;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.22s cubic-bezier(0.34,1.2,0.64,1);
+    }
+    .nav-link:hover { color: #1C1C1A; }
+    .nav-link:hover::after { transform: scaleX(1); }
+    .nav-link:focus-visible { outline: 2px solid #CBCEEA; border-radius: 2px; }
+
+    /* ── Aurora background ── */
+    .aurora-wrapper {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .aurora-inner {
+      position: absolute;
+      inset: -10px;
+      opacity: 0.50;
+      filter: blur(10px) invert(1);
+      will-change: transform;
+      background-image:
+        repeating-linear-gradient(
+          100deg,
+          #ffffff 0%, #ffffff 7%,
+          transparent 10%, transparent 12%,
+          #ffffff 16%
+        ),
+        repeating-linear-gradient(
+          100deg,
+          #3b82f6 10%,
+          #a5b4fc 15%,
+          #93c5fd 20%,
+          #ddd6fe 25%,
+          #60a5fa 30%
+        );
+      background-size: 300%, 200%;
+      background-position: 50% 50%, 50% 50%;
+      -webkit-mask-image: radial-gradient(ellipse at 100% 0%, black 10%, transparent 70%);
+      mask-image: radial-gradient(ellipse at 100% 0%, black 10%, transparent 70%);
+      animation: aurora 60s linear infinite;
+    }
+
+    .aurora-inner::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        repeating-linear-gradient(
+          100deg,
+          #ffffff 0%, #ffffff 7%,
+          transparent 10%, transparent 12%,
+          #ffffff 16%
+        ),
+        repeating-linear-gradient(
+          100deg,
+          #3b82f6 10%,
+          #a5b4fc 15%,
+          #93c5fd 20%,
+          #ddd6fe 25%,
+          #60a5fa 30%
+        );
+      background-size: 200%, 100%;
+      background-attachment: fixed;
+      mix-blend-mode: difference;
+      animation: aurora 60s linear infinite;
+    }
+
+    @keyframes aurora {
+      from { background-position: 50% 50%, 50% 50%; }
+      to   { background-position: 350% 50%, 350% 50%; }
+    }
+
+    /* ── Divider line ── */
+    .thin-rule {
+      border: none;
+      border-top: 1px solid rgba(93,93,90,0.12);
+    }
+
+    /* ── Success state ── */
+    .success-msg {
+      display: none;
+      align-items: center;
+      gap: 10px;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      color: #5D5D5A;
+    }
+    .success-msg.show { display: flex; }
+  </style>
+</head>
+
+<body class="bg-canvas min-h-screen">
+
+  <!-- ════════════════════════════════════
+       NAV
+  ════════════════════════════════════ -->
+  <nav class="fixed top-0 left-0 right-0 z-50" style="backdrop-filter: blur(16px); background: rgba(245,244,237,0.80); border-bottom: 1px solid rgba(93,93,90,0.08);">
+    <div class="max-w-6xl mx-auto px-6 md:px-10 flex items-center justify-between" style="height: 64px;">
+
+      <!-- Logo -->
+      <a href="/" class="flex items-center gap-3" style="text-decoration:none;" aria-label="The World Unravelled home">
+        <!-- Globe glyph -->
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <circle cx="14" cy="14" r="12.5" stroke="#1C1C1A" stroke-width="1.5"/>
+          <ellipse cx="14" cy="14" rx="6" ry="12.5" stroke="#1C1C1A" stroke-width="1.5"/>
+          <line x1="1.5" y1="10" x2="26.5" y2="10" stroke="#1C1C1A" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="1.5" y1="18" x2="26.5" y2="18" stroke="#1C1C1A" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        <span style="font-family:'Cormorant Garamond',Georgia,serif; font-weight:600; font-size:17px; letter-spacing:-0.01em; color:#1C1C1A; line-height:1;">The World Unravelled</span>
+      </a>
+
+      <!-- Nav links -->
+      <div class="hidden md:flex items-center gap-8">
+        <a href="#about" class="nav-link">About</a>
+        <a href="#topics" class="nav-link">Topics</a>
+        <a href="#subscribe-cta" class="nav-link">Subscribe</a>
+      </div>
+
+      <!-- CTA -->
+      <a href="#subscribe-cta" class="hidden md:block" style="font-family:'Inter',sans-serif; font-size:13px; font-weight:500; letter-spacing:0.06em; text-transform:uppercase; color:#1C1C1A; text-decoration:none; padding:8px 20px; border:1.5px solid rgba(28,28,26,0.20); border-radius:5px; transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease;"
+        onmouseover="this.style.background='#1C1C1A'; this.style.color='#F5F4ED';"
+        onmouseout="this.style.background='transparent'; this.style.color='#1C1C1A';"
+        onfocus="this.style.outline='2.5px solid #CBCEEA'; this.style.outlineOffset='3px';"
+        onfocusout="this.style.outline='none';">
+        Join Free
+      </a>
+
+      <!-- Mobile menu icon -->
+      <button class="md:hidden flex flex-col gap-[5px] p-2" aria-label="Toggle menu" onclick="toggleMobileMenu()">
+        <span style="display:block; width:20px; height:1.5px; background:#1C1C1A;"></span>
+        <span style="display:block; width:20px; height:1.5px; background:#1C1C1A;"></span>
+        <span style="display:block; width:14px; height:1.5px; background:#1C1C1A;"></span>
+      </button>
+    </div>
+
+    <!-- Mobile dropdown -->
+    <div id="mobileMenu" style="display:none; background:rgba(245,244,237,0.96); border-top:1px solid rgba(93,93,90,0.08); padding:16px 24px 20px;">
+      <div class="flex flex-col gap-4">
+        <a href="#about"     class="nav-link" onclick="toggleMobileMenu()">About</a>
+        <a href="#topics"    class="nav-link" onclick="toggleMobileMenu()">Topics</a>
+        <a href="#subscribe-cta" class="nav-link" onclick="toggleMobileMenu()">Subscribe</a>
+      </div>
+    </div>
+  </nav>
+
+
+  <!-- ════════════════════════════════════
+       HERO
+  ════════════════════════════════════ -->
+  <section class="relative min-h-screen flex flex-col justify-center overflow-hidden" style="padding-top: 64px;">
+
+    <!-- Aurora animated background -->
+    <div class="aurora-wrapper" aria-hidden="true">
+      <div class="aurora-inner"></div>
+    </div>
+
+    <!-- Decorative doodle circles (top-right) -->
+    <div class="absolute top-24 right-0 pointer-events-none" style="width:420px; height:420px; opacity:0.18; z-index:1;">
+      <svg viewBox="0 0 420 420" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="280" cy="140" r="130" stroke="#CBCEEA" stroke-width="1.5" stroke-dasharray="6 4"/>
+        <circle cx="280" cy="140" r="90"  stroke="#CBCEEA" stroke-width="1"   stroke-dasharray="3 6"/>
+        <circle cx="340" cy="80"  r="40"  stroke="#F8E5E5" stroke-width="1.5"/>
+      </svg>
+    </div>
+
+    <!-- Decorative doodle (bottom-left) -->
+    <div class="absolute bottom-16 left-0 pointer-events-none" style="width:320px; height:280px; opacity:0.16; z-index:1;">
+      <svg viewBox="0 0 320 280" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="60"  cy="200" r="100" stroke="#DEF1D0" stroke-width="1.5" stroke-dasharray="5 5"/>
+        <circle cx="60"  cy="200" r="60"  stroke="#CDEBF1" stroke-width="1"   stroke-dasharray="2 7"/>
+        <circle cx="110" cy="150" r="35"  stroke="#DEF1D0" stroke-width="1.5"/>
+      </svg>
+    </div>
+
+    <div class="max-w-6xl mx-auto px-6 md:px-10 w-full" style="position:relative; z-index:1;">
+      <div class="grid md:grid-cols-2 gap-16 items-center min-h-[calc(100vh-64px)] py-24">
+
+        <!-- Left: text + form -->
+        <div>
+
+          <!-- Eyebrow pill -->
+          <div class="fade-up fade-up-1 mb-8">
+            <span class="pill" style="background:rgba(203,206,234,0.28); border-color:rgba(203,206,234,0.60); color:#5D5D5A;">
+              Free Weekly Newsletter
+            </span>
+          </div>
+
+          <!-- Headline -->
+          <h1 class="display-heading fade-up fade-up-2 mb-6" style="font-size: clamp(48px, 6vw, 86px); color:#1C1C1A;">
+            Make sense of<br />
+            <em style="font-style:italic; color:#5D5D5A;">the world</em><br />
+            around you.
+          </h1>
+
+          <!-- Subtext -->
+          <p class="fade-up fade-up-3 mb-10" style="font-size:17px; line-height:1.75; color:#5D5D5A; font-weight:300; max-width:440px;">
+            A carefully curated newsletter exploring global ideas, hidden histories, and the forces quietly shaping our world — delivered to your inbox every week.
+          </p>
+
+          <!-- Email form -->
+          <div class="fade-up fade-up-4" id="subscribe">
+            <form id="signupForm" onsubmit="handleSubmit(event)" novalidate>
+              <div class="flex flex-col sm:flex-row gap-3" style="max-width:480px;">
+                <input
+                  id="emailInput"
+                  type="email"
+                  class="email-input"
+                  placeholder="Your email address"
+                  autocomplete="email"
+                  required
+                  aria-label="Email address"
+                />
+                <button type="submit" class="cta-btn">
+                  Subscribe
+                </button>
+              </div>
+              <!-- Error message -->
+              <p id="errorMsg" style="display:none; margin-top:8px; font-size:13px; color:#C0625A; font-family:'Inter',sans-serif;">
+                Please enter a valid email address.
+              </p>
+              <!-- Success message -->
+              <div id="successMsg" class="success-msg" style="margin-top:12px;">
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="8.5" stroke="#5D5D5A" stroke-width="1.2"/><path d="M5.5 9.5l2.5 2.5 4.5-5" stroke="#5D5D5A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <span>You're in! Check your inbox for a welcome note.</span>
+              </div>
+            </form>
+
+            <p class="fade-up fade-up-5" style="margin-top:12px; font-size:12px; color:rgba(93,93,90,0.55); font-family:'Inter',sans-serif; letter-spacing:0.02em;">
+              No spam, ever. Unsubscribe in one click.
+            </p>
+          </div>
+
+          <!-- Social proof -->
+          <div class="fade-up fade-up-5 flex items-center gap-4 mt-10">
+            <div class="flex -space-x-2">
+              <div style="width:32px;height:32px;border-radius:50%;border:2px solid #F5F4ED;background:linear-gradient(135deg,#CBCEEA,#F8E5E5);"></div>
+              <div style="width:32px;height:32px;border-radius:50%;border:2px solid #F5F4ED;background:linear-gradient(135deg,#DEF1D0,#CDEBF1);"></div>
+              <div style="width:32px;height:32px;border-radius:50%;border:2px solid #F5F4ED;background:linear-gradient(135deg,#F8E5E5,#CBCEEA);"></div>
+              <div style="width:32px;height:32px;border-radius:50%;border:2px solid #F5F4ED;background:linear-gradient(135deg,#CDEBF1,#DEF1D0);"></div>
+            </div>
+            <p style="font-size:13px; color:#5D5D5A; font-family:'Inter',sans-serif; line-height:1.5;">
+              Join <strong style="color:#1C1C1A; font-weight:500;">2,400+</strong> curious minds<br/>already reading
+            </p>
+          </div>
+        </div>
+
+        <!-- Right: decorative editorial card -->
+        <div class="hidden md:flex flex-col gap-5 items-end">
+
+          <!-- Featured article card -->
+          <div class="topic-card card-shadow w-full max-w-sm rounded-2xl overflow-hidden" style="background: rgba(255,255,255,0.60); backdrop-filter:blur(20px); border:1px solid rgba(255,255,255,0.80);">
+            <!-- Image block -->
+            <div style="height:180px; background:linear-gradient(135deg,#CBCEEA 0%,#F8E5E5 50%,#DEF1D0 100%); position:relative; overflow:hidden;">
+              <div style="position:absolute;inset:0;background:linear-gradient(to bottom,transparent 40%,rgba(28,28,26,0.25));"></div>
+              <!-- Doodle overlay -->
+              <svg style="position:absolute;top:16px;right:16px;opacity:0.5;" width="60" height="60" viewBox="0 0 60 60" fill="none">
+                <circle cx="30" cy="30" r="28" stroke="white" stroke-width="1.5" stroke-dasharray="4 3"/>
+              </svg>
+              <div style="position:absolute;bottom:14px;left:16px;">
+                <span class="pill" style="background:rgba(245,244,237,0.22);border-color:rgba(245,244,237,0.40);color:white;font-size:10px;">Geopolitics</span>
+              </div>
+            </div>
+            <div style="padding:20px 22px 22px;">
+              <p style="font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;line-height:1.3;color:#1C1C1A;letter-spacing:-0.01em;margin-bottom:10px;">
+                The quiet reshaping of global trade routes
+              </p>
+              <p style="font-size:13px;line-height:1.65;color:#5D5D5A;font-family:'Inter',sans-serif;font-weight:300;">
+                Why the maps we grew up with no longer tell the full story of how goods and power move across the planet.
+              </p>
+              <div style="margin-top:14px;display:flex;align-items:center;gap:8px;">
+                <div style="width:22px;height:22px;border-radius:50%;background:linear-gradient(135deg,#CBCEEA,#CDEBF1);"></div>
+                <span style="font-size:12px;color:rgba(93,93,90,0.70);font-family:'Inter',sans-serif;">5 min read · Latest issue</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Two small cards -->
+          <div class="flex gap-4 w-full max-w-sm">
+            <div class="topic-card card-shadow flex-1 rounded-xl p-4" style="background:rgba(203,206,234,0.30);border:1px solid rgba(203,206,234,0.50);backdrop-filter:blur(12px);">
+              <div style="font-size:11px;font-family:'Inter',sans-serif;letter-spacing:0.07em;text-transform:uppercase;color:#5D5D5A;margin-bottom:8px;">History</div>
+              <p style="font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:600;line-height:1.35;color:#1C1C1A;">Empires that vanished without a trace</p>
+            </div>
+            <div class="topic-card card-shadow flex-1 rounded-xl p-4" style="background:rgba(248,229,229,0.35);border:1px solid rgba(248,229,229,0.60);backdrop-filter:blur(12px);">
+              <div style="font-size:11px;font-family:'Inter',sans-serif;letter-spacing:0.07em;text-transform:uppercase;color:#5D5D5A;margin-bottom:8px;">Science</div>
+              <p style="font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:600;line-height:1.35;color:#1C1C1A;">The species rewriting their own DNA</p>
+            </div>
+          </div>
+
+          <!-- Doodle arrows decoration -->
+          <div style="display:flex;align-items:center;gap:6px;opacity:0.35;padding-right:8px;" aria-hidden="true">
+            <svg class="doodle-arrow" width="36" height="28" viewBox="0 0 36 28" fill="none">
+              <path d="M2 24 C8 20, 18 14, 26 8" stroke="#1C1C1A" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M20 5 L27 8 L23 15" stroke="#1C1C1A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <svg class="doodle-arrow" width="36" height="28" viewBox="0 0 36 28" fill="none">
+              <path d="M2 24 C8 20, 18 14, 26 8" stroke="#1C1C1A" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="3 3"/>
+              <path d="M20 5 L27 8 L23 15" stroke="#1C1C1A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span style="font-family:'Cormorant Garamond',serif;font-size:13px;font-style:italic;color:#5D5D5A;">this week's read</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ════════════════════════════════════
+       DIVIDER + ABOUT
+  ════════════════════════════════════ -->
+  <section id="about" style="padding:80px 0 72px;">
+    <div class="max-w-6xl mx-auto px-6 md:px-10">
+      <hr class="thin-rule mb-16" />
+
+      <div class="grid md:grid-cols-3 gap-12">
+        <div class="md:col-span-1">
+          <p style="font-family:'Cormorant Garamond',serif;font-size:13px;font-weight:400;letter-spacing:0.12em;text-transform:uppercase;color:#5D5D5A;margin-bottom:12px;">The mission</p>
+          <h2 class="display-heading" style="font-size:36px;color:#1C1C1A;line-height:1.15;">The world is complex. We make it legible.</h2>
+        </div>
+        <div class="md:col-span-2 flex flex-col gap-6 justify-center">
+          <p style="font-size:16px;line-height:1.78;color:#5D5D5A;font-weight:300;">
+            Every week, <em style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:18px;color:#1C1C1A;">The World Unravelled</em> takes one idea, event, or question — and pulls at the thread. We explore geopolitics, science, history, culture, and economics through a lens of genuine curiosity. No hot takes. No noise. Just depth.
+          </p>
+          <p style="font-size:16px;line-height:1.78;color:#5D5D5A;font-weight:300;">
+            Built for readers who want to understand the world more fully — and enjoy the journey of getting there.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ════════════════════════════════════
+       TOPICS
+  ════════════════════════════════════ -->
+  <section id="topics" style="padding:0 0 96px;">
+    <div class="max-w-6xl mx-auto px-6 md:px-10">
+      <hr class="thin-rule mb-16" />
+
+      <p style="font-family:'Cormorant Garamond',serif;font-size:13px;font-weight:400;letter-spacing:0.12em;text-transform:uppercase;color:#5D5D5A;margin-bottom:48px;">What we explore</p>
+
+      <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-5">
+
+        <!-- Topic 1 -->
+        <div class="topic-card card-shadow rounded-2xl p-6" style="background:rgba(203,206,234,0.22);border:1px solid rgba(203,206,234,0.40);">
+          <div style="width:36px;height:36px;border-radius:8px;background:rgba(203,206,234,0.50);display:flex;align-items:center;justify-content:center;margin-bottom:16px;">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7.5" stroke="#5D5D5A" stroke-width="1.2"/><path d="M9 1.5v15M1.5 9h15" stroke="#5D5D5A" stroke-width="1.2" stroke-linecap="round"/></svg>
+          </div>
+          <h3 style="font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;color:#1C1C1A;margin-bottom:8px;line-height:1.3;">Geopolitics</h3>
+          <p style="font-size:14px;line-height:1.68;color:#5D5D5A;font-weight:300;">The shifting alliances, border tensions, and power plays quietly reordering our world.</p>
+        </div>
+
+        <!-- Topic 2 -->
+        <div class="topic-card card-shadow rounded-2xl p-6" style="background:rgba(248,229,229,0.28);border:1px solid rgba(248,229,229,0.55);">
+          <div style="width:36px;height:36px;border-radius:8px;background:rgba(248,229,229,0.60);display:flex;align-items:center;justify-content:center;margin-bottom:16px;">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 2L10.8 7H16L11.6 10.2L13.4 15.2L9 12L4.6 15.2L6.4 10.2L2 7H7.2L9 2Z" stroke="#5D5D5A" stroke-width="1.2" stroke-linejoin="round"/></svg>
+          </div>
+          <h3 style="font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;color:#1C1C1A;margin-bottom:8px;line-height:1.3;">Hidden History</h3>
+          <p style="font-size:14px;line-height:1.68;color:#5D5D5A;font-weight:300;">The forgotten stories, overlooked civilisations, and untold moments that shaped us.</p>
+        </div>
+
+        <!-- Topic 3 -->
+        <div class="topic-card card-shadow rounded-2xl p-6" style="background:rgba(222,241,208,0.28);border:1px solid rgba(222,241,208,0.55);">
+          <div style="width:36px;height:36px;border-radius:8px;background:rgba(222,241,208,0.55);display:flex;align-items:center;justify-content:center;margin-bottom:16px;">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 2C5.13 2 2 5.13 2 9s3.13 7 7 7 7-3.13 7-7-3.13-7-7-7z" stroke="#5D5D5A" stroke-width="1.2"/><path d="M9 5v4l3 2" stroke="#5D5D5A" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <h3 style="font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;color:#1C1C1A;margin-bottom:8px;line-height:1.3;">Science & Ideas</h3>
+          <p style="font-size:14px;line-height:1.68;color:#5D5D5A;font-weight:300;">Breakthroughs, paradoxes, and the scientific questions that keep researchers up at night.</p>
+        </div>
+
+        <!-- Topic 4 -->
+        <div class="topic-card card-shadow rounded-2xl p-6" style="background:rgba(205,235,241,0.28);border:1px solid rgba(205,235,241,0.55);">
+          <div style="width:36px;height:36px;border-radius:8px;background:rgba(205,235,241,0.55);display:flex;align-items:center;justify-content:center;margin-bottom:16px;">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M3 6h12M3 9h8M3 12h10" stroke="#5D5D5A" stroke-width="1.2" stroke-linecap="round"/><rect x="1.5" y="2.5" width="15" height="13" rx="2" stroke="#5D5D5A" stroke-width="1.2"/></svg>
+          </div>
+          <h3 style="font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;color:#1C1C1A;margin-bottom:8px;line-height:1.3;">Economics</h3>
+          <p style="font-size:14px;line-height:1.68;color:#5D5D5A;font-weight:300;">Markets, money, and the invisible economic forces shaping how we live and work.</p>
+        </div>
+
+        <!-- Topic 5 -->
+        <div class="topic-card card-shadow rounded-2xl p-6" style="background:rgba(203,206,234,0.18);border:1px solid rgba(203,206,234,0.35);">
+          <div style="width:36px;height:36px;border-radius:8px;background:rgba(203,206,234,0.40);display:flex;align-items:center;justify-content:center;margin-bottom:16px;">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 2C6.24 2 4 4.24 4 7c0 3.75 5 9 5 9s5-5.25 5-9c0-2.76-2.24-5-5-5z" stroke="#5D5D5A" stroke-width="1.2"/><circle cx="9" cy="7" r="1.5" stroke="#5D5D5A" stroke-width="1.2"/></svg>
+          </div>
+          <h3 style="font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;color:#1C1C1A;margin-bottom:8px;line-height:1.3;">Culture & Society</h3>
+          <p style="font-size:14px;line-height:1.68;color:#5D5D5A;font-weight:300;">Art, language, belief, and the cultural currents that connect — and divide — us.</p>
+        </div>
+
+        <!-- Topic 6: CTA card -->
+        <div class="topic-card rounded-2xl p-6 flex flex-col justify-between" style="background:#1C1C1A;border:1px solid rgba(255,255,255,0.08);box-shadow:0 2px 4px rgba(28,28,26,0.12),0 8px 24px rgba(28,28,26,0.18);">
+          <div>
+            <p style="font-family:'Cormorant Garamond',serif;font-size:13px;letter-spacing:0.10em;text-transform:uppercase;color:rgba(245,244,237,0.45);margin-bottom:14px;">Every week</p>
+            <h3 style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;color:#F5F4ED;line-height:1.3;margin-bottom:8px;">One story. Deeply told.</h3>
+            <p style="font-size:13px;line-height:1.65;color:rgba(245,244,237,0.55);font-weight:300;">Free, thoughtful, and always worth the read.</p>
+          </div>
+          <a href="#subscribe" style="display:inline-block;margin-top:20px;font-family:'Inter',sans-serif;font-size:12px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;color:#F5F4ED;text-decoration:none;padding:10px 0;border-bottom:1px solid rgba(245,244,237,0.30);transition:border-color 0.18s ease;"
+            onmouseover="this.style.borderColor='rgba(245,244,237,0.80)'"
+            onmouseout="this.style.borderColor='rgba(245,244,237,0.30)'">
+            Start reading →
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ════════════════════════════════════
+       BOTTOM CTA BAND
+  ════════════════════════════════════ -->
+  <section id="subscribe-cta" style="padding:96px 0;">
+    <div class="max-w-6xl mx-auto px-6 md:px-10">
+      <div class="rounded-3xl overflow-hidden relative" style="background:linear-gradient(135deg,#CBCEEA 0%,#F8E5E5 50%,#DEF1D0 100%); padding:72px 56px;">
+
+        <!-- Background doodle -->
+        <div class="absolute inset-0 pointer-events-none" style="opacity:0.12;" aria-hidden="true">
+          <svg width="100%" height="100%" viewBox="0 0 800 300" preserveAspectRatio="xMidYMid slice" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="700" cy="50"  r="180" stroke="#1C1C1A" stroke-width="1" stroke-dasharray="6 4"/>
+            <circle cx="700" cy="50"  r="120" stroke="#1C1C1A" stroke-width="1" stroke-dasharray="3 6"/>
+            <circle cx="100" cy="260" r="140" stroke="#1C1C1A" stroke-width="1" stroke-dasharray="5 5"/>
+            <circle cx="100" cy="260" r="80"  stroke="#1C1C1A" stroke-width="1" stroke-dasharray="2 7"/>
+          </svg>
+        </div>
+
+        <div class="relative max-w-xl">
+          <h2 class="display-heading mb-4" style="font-size: clamp(36px, 4vw, 58px); color:#1C1C1A;">
+            Curious about the world?<br/><em style="font-style:italic;">You belong here.</em>
+          </h2>
+          <p style="font-size:17px;line-height:1.72;color:#5D5D5A;font-weight:300;margin-bottom:32px;max-width:400px;">
+            Join thousands of readers who start their week with a clearer view of it.
+          </p>
+
+          <form id="signupForm2" onsubmit="handleSubmit2(event)" novalidate>
+            <div class="flex flex-col sm:flex-row gap-3" style="max-width:460px;">
+              <input
+                id="emailInput2"
+                type="email"
+                class="email-input"
+                placeholder="Your email address"
+                autocomplete="email"
+                required
+                aria-label="Email address"
+                style="background:rgba(245,244,237,0.80);"
+              />
+              <button type="submit" class="cta-btn">
+                Subscribe
+              </button>
+            </div>
+            <p id="errorMsg2" style="display:none; margin-top:8px; font-size:13px; color:#C0625A; font-family:'Inter',sans-serif;">
+              Please enter a valid email address.
+            </p>
+            <div id="successMsg2" class="success-msg" style="margin-top:12px;">
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="8.5" stroke="#5D5D5A" stroke-width="1.2"/><path d="M5.5 9.5l2.5 2.5 4.5-5" stroke="#5D5D5A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <span>You're in! Check your inbox for a welcome note.</span>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ════════════════════════════════════
+       FOOTER
+  ════════════════════════════════════ -->
+  <footer style="padding:40px 0 48px; border-top:1px solid rgba(93,93,90,0.10);">
+    <div class="max-w-6xl mx-auto px-6 md:px-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
+
+      <!-- Logo -->
+      <div class="flex items-center gap-3">
+        <svg width="22" height="22" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <circle cx="14" cy="14" r="12.5" stroke="#5D5D5A" stroke-width="1.5"/>
+          <ellipse cx="14" cy="14" rx="6" ry="12.5" stroke="#5D5D5A" stroke-width="1.5"/>
+          <line x1="1.5" y1="10" x2="26.5" y2="10" stroke="#5D5D5A" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="1.5" y1="18" x2="26.5" y2="18" stroke="#5D5D5A" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        <span style="font-family:'Cormorant Garamond',serif;font-weight:600;font-size:15px;letter-spacing:-0.01em;color:#5D5D5A;">The World Unravelled</span>
+      </div>
+
+      <!-- Links -->
+      <div class="flex gap-6">
+        <a href="#" class="nav-link" style="font-size:12px;">Privacy</a>
+        <a href="#" class="nav-link" style="font-size:12px;">Unsubscribe</a>
+        <a href="#" class="nav-link" style="font-size:12px;">Contact</a>
+      </div>
+
+      <!-- Copyright -->
+      <p style="font-size:12px;color:rgba(93,93,90,0.45);font-family:'Inter',sans-serif;">© 2025 The World Unravelled. All rights reserved.</p>
+    </div>
+  </footer>
+
+
+  <!-- ════════════════════════════════════
+       SCRIPTS
+  ════════════════════════════════════ -->
+  <script>
+    function isValidEmail(email) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
+    }
+
+    function handleSubmit(e) {
+      e.preventDefault();
+      const input = document.getElementById('emailInput');
+      const error = document.getElementById('errorMsg');
+      const success = document.getElementById('successMsg');
+
+      if (!isValidEmail(input.value)) {
+        error.style.display = 'block';
+        success.classList.remove('show');
+        input.style.borderColor = 'rgba(192,98,90,0.60)';
+        return;
+      }
+
+      error.style.display = 'none';
+      input.style.borderColor = 'rgba(93,93,90,0.15)';
+      success.classList.add('show');
+      input.value = '';
+      // TODO: wire up to your email provider (Mailchimp, ConvertKit, etc.)
+    }
+
+    function handleSubmit2(e) {
+      e.preventDefault();
+      const input = document.getElementById('emailInput2');
+      const error = document.getElementById('errorMsg2');
+      const success = document.getElementById('successMsg2');
+
+      if (!isValidEmail(input.value)) {
+        error.style.display = 'block';
+        success.classList.remove('show');
+        input.style.borderColor = 'rgba(192,98,90,0.60)';
+        return;
+      }
+
+      error.style.display = 'none';
+      input.style.borderColor = 'rgba(93,93,90,0.15)';
+      success.classList.add('show');
+      input.value = '';
+    }
+
+    function toggleMobileMenu() {
+      const menu = document.getElementById('mobileMenu');
+      menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+    }
+  </script>
+
+</body>
+</html>
