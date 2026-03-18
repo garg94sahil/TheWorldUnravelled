@@ -758,11 +758,34 @@
       return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
     }
 
-    function handleSubmit(e) {
+    const BEEHIIV_PUB_ID = 'pub_6e79921b-060e-41a0-98fb-cbdc0c3ea6c9';
+    const BEEHIIV_API_KEY = 'OISgEFS2Hg2zuprlMJbLBUDYxKaPGIJuIvKZyTeORIDeKxBZVLYbAJaOQkO5HyhF';
+
+    async function subscribeToBeehiiv(email) {
+      const res = await fetch(
+        `https://api.beehiiv.com/v2/publications/${BEEHIIV_PUB_ID}/subscriptions`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${BEEHIIV_API_KEY}`
+          },
+          body: JSON.stringify({
+            email: email.trim(),
+            reactivate_existing: false,
+            send_welcome_email: true
+          })
+        }
+      );
+      if (!res.ok) throw new Error('Subscription failed');
+    }
+
+    async function handleSubmit(e) {
       e.preventDefault();
       const input = document.getElementById('emailInput');
       const error = document.getElementById('errorMsg');
       const success = document.getElementById('successMsg');
+      const btn = e.target.querySelector('button[type="submit"]');
 
       if (!isValidEmail(input.value)) {
         error.style.display = 'block';
@@ -773,16 +796,28 @@
 
       error.style.display = 'none';
       input.style.borderColor = 'rgba(93,93,90,0.15)';
-      success.classList.add('show');
-      input.value = '';
-      // TODO: wire up to your email provider (Mailchimp, ConvertKit, etc.)
+      btn.disabled = true;
+      btn.textContent = 'Subscribing…';
+
+      try {
+        await subscribeToBeehiiv(input.value);
+        success.classList.add('show');
+        input.value = '';
+      } catch {
+        error.textContent = 'Something went wrong. Please try again.';
+        error.style.display = 'block';
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Subscribe';
+      }
     }
 
-    function handleSubmit2(e) {
+    async function handleSubmit2(e) {
       e.preventDefault();
       const input = document.getElementById('emailInput2');
       const error = document.getElementById('errorMsg2');
       const success = document.getElementById('successMsg2');
+      const btn = e.target.querySelector('button[type="submit"]');
 
       if (!isValidEmail(input.value)) {
         error.style.display = 'block';
@@ -793,8 +828,20 @@
 
       error.style.display = 'none';
       input.style.borderColor = 'rgba(93,93,90,0.15)';
-      success.classList.add('show');
-      input.value = '';
+      btn.disabled = true;
+      btn.textContent = 'Subscribing…';
+
+      try {
+        await subscribeToBeehiiv(input.value);
+        success.classList.add('show');
+        input.value = '';
+      } catch {
+        error.textContent = 'Something went wrong. Please try again.';
+        error.style.display = 'block';
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Subscribe';
+      }
     }
 
     function toggleMobileMenu() {
