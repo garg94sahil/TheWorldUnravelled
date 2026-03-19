@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Swipe Left on the Lie — The World Unravelled</title>
+  <meta name="description" content="Dating apps promised to solve loneliness. The data says they made it worse. And now the market is finally catching up." />
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            cream:    '#F5F4ED',
+            blush:    '#F8E5E5',
+            lavender: '#CBCEEA',
+            sage:     '#DEF1D0',
+            sky:      '#CDEBF1',
+            muted:    '#5D5D5A',
+            ink:      '#1C1C1A',
+          },
+          fontFamily: {
+            display: ['"Cormorant Garamond"', 'Georgia', 'serif'],
+            body:    ['Inter', 'system-ui', 'sans-serif'],
+          },
+        },
+      },
+    };
+  </script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: #F5F4ED;
+      color: #1C1C1A;
+      font-family: 'Inter', system-ui, sans-serif;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Grain texture */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 100;
+      opacity: 0.032;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+    }
+
+    /* Nav link */
+    .nav-link {
+      position: relative;
+      font-size: 13px;
+      font-weight: 400;
+      letter-spacing: 0.05em;
+      color: #5D5D5A;
+      text-decoration: none;
+      transition: color 0.18s ease;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0; right: 0;
+      height: 1px;
+      background: #1C1C1A;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.22s cubic-bezier(0.34,1.2,0.64,1);
+    }
+    .nav-link:hover { color: #1C1C1A; }
+    .nav-link:hover::after { transform: scaleX(1); }
+
+    /* Article body typography */
+    .article-body p {
+      font-size: 18px;
+      line-height: 1.82;
+      color: #2E2E2C;
+      font-weight: 300;
+      margin-bottom: 1.6rem;
+    }
+    .article-body h2 {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 28px;
+      font-weight: 600;
+      color: #1C1C1A;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+      margin: 3rem 0 1.2rem;
+    }
+    .article-body strong {
+      font-weight: 500;
+      color: #1C1C1A;
+    }
+    .article-body em {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-style: italic;
+      font-size: 1.05em;
+    }
+
+    /* Pull quote */
+    .pull-quote {
+      border-left: 2px solid #CBCEEA;
+      padding: 0.5rem 0 0.5rem 2rem;
+      margin: 2.5rem 0;
+    }
+    .pull-quote p {
+      font-family: 'Cormorant Garamond', Georgia, serif !important;
+      font-size: 26px !important;
+      font-weight: 400 !important;
+      font-style: italic;
+      line-height: 1.45 !important;
+      color: #1C1C1A !important;
+      margin-bottom: 0 !important;
+      letter-spacing: -0.01em;
+    }
+
+    /* Thin rule */
+    .thin-rule {
+      border: none;
+      border-top: 1px solid rgba(93,93,90,0.12);
+    }
+
+    /* Card shadow */
+    .card-shadow {
+      box-shadow:
+        0 1px 2px rgba(93,93,90,0.04),
+        0 4px 12px rgba(93,93,90,0.06),
+        0 12px 32px rgba(93,93,90,0.07);
+    }
+
+    /* CTA button */
+    .cta-btn {
+      background: #1C1C1A;
+      color: #F5F4ED;
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 12px 28px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      transition: transform 0.18s cubic-bezier(0.34,1.56,0.64,1),
+                  box-shadow 0.18s cubic-bezier(0.34,1.56,0.64,1);
+      box-shadow: 0 2px 4px rgba(28,28,26,0.12), 0 6px 16px rgba(28,28,26,0.14);
+    }
+    .cta-btn:hover {
+      transform: translateY(-2px) scale(1.01);
+      box-shadow: 0 4px 8px rgba(28,28,26,0.14), 0 12px 28px rgba(28,28,26,0.18);
+    }
+    .cta-btn:active { transform: translateY(0) scale(0.99); }
+
+    /* Pill */
+    .pill {
+      display: inline-block;
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 5px 12px;
+      border-radius: 999px;
+      border: 1px solid;
+    }
+
+    /* Email input */
+    .email-input {
+      background: rgba(255,255,255,0.72);
+      backdrop-filter: blur(12px);
+      border: 1.5px solid rgba(93,93,90,0.15);
+      border-radius: 6px;
+      padding: 13px 18px;
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      color: #1C1C1A;
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      width: 100%;
+    }
+    .email-input::placeholder { color: rgba(93,93,90,0.5); }
+    .email-input:focus {
+      border-color: #CBCEEA;
+      box-shadow: 0 0 0 3px rgba(203,206,234,0.30);
+    }
+
+    .success-msg {
+      display: none;
+      align-items: center;
+      gap: 10px;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      color: #5D5D5A;
+    }
+    .success-msg.show { display: flex; }
+  </style>
+</head>
+
+<body class="min-h-screen" style="background-color:#F5F4ED;">
+
+  <!-- NAV -->
+  <nav class="fixed top-0 left-0 right-0 z-50" style="backdrop-filter:blur(16px); background:rgba(245,244,237,0.80); border-bottom:1px solid rgba(93,93,90,0.08);">
+    <div class="max-w-6xl mx-auto px-6 md:px-10 flex items-center justify-between" style="height:64px;">
+      <a href="/" style="text-decoration:none; display:flex; align-items:center; gap:12px;" aria-label="The World Unravelled home">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <circle cx="14" cy="14" r="12.5" stroke="#1C1C1A" stroke-width="1.5"/>
+          <ellipse cx="14" cy="14" rx="6" ry="12.5" stroke="#1C1C1A" stroke-width="1.5"/>
+          <line x1="1.5" y1="10" x2="26.5" y2="10" stroke="#1C1C1A" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="1.5" y1="18" x2="26.5" y2="18" stroke="#1C1C1A" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        <span style="font-family:'Cormorant Garamond',Georgia,serif; font-weight:600; font-size:17px; letter-spacing:-0.01em; color:#1C1C1A;">The World Unravelled</span>
+      </a>
+      <div style="display:flex; align-items:center; gap:2rem;">
+        <a href="/#about"    class="nav-link" style="display:none;" id="navAbout">About</a>
+        <a href="/#topics"   class="nav-link" style="display:none;" id="navTopics">Topics</a>
+        <a href="/#subscribe-cta" class="nav-link" style="display:none;" id="navSub">Subscribe</a>
+      </div>
+    </div>
+  </nav>
+  <script>
+    if (window.innerWidth >= 768) {
+      document.getElementById('navAbout').style.display = 'inline';
+      document.getElementById('navTopics').style.display = 'inline';
+      document.getElementById('navSub').style.display = 'inline';
+    }
+  </script>
+
+
+  <!-- ARTICLE HEADER -->
+  <header style="padding-top:64px; padding-bottom:0;">
+    <div class="max-w-3xl mx-auto px-6 md:px-10" style="padding-top:72px; padding-bottom:48px;">
+
+      <!-- Breadcrumb -->
+      <div style="display:flex; align-items:center; gap:10px; margin-bottom:32px;">
+        <a href="/" style="font-size:13px; color:#5D5D5A; text-decoration:none; font-family:'Inter',sans-serif; transition:color 0.15s;" onmouseover="this.style.color='#1C1C1A'" onmouseout="this.style.color='#5D5D5A'">Home</a>
+        <span style="font-size:13px; color:rgba(93,93,90,0.40);">→</span>
+        <span style="font-size:13px; color:#5D5D5A; font-family:'Inter',sans-serif;">Culture &amp; Society</span>
+      </div>
+
+      <!-- Category pill -->
+      <div style="margin-bottom:20px;">
+        <span class="pill" style="background:rgba(222,241,208,0.40); border-color:rgba(222,241,208,0.80); color:#5D5D5A;">Culture &amp; Society</span>
+      </div>
+
+      <!-- Headline -->
+      <h1 style="font-family:'Cormorant Garamond',Georgia,serif; font-weight:600; font-size:clamp(38px,5.5vw,68px); letter-spacing:-0.03em; line-height:1.06; color:#1C1C1A; margin-bottom:24px;">
+        Swipe Left on the Lie: Dating Apps Sold Us Love and Delivered Loneliness
+      </h1>
+
+      <!-- Subheading -->
+      <p style="font-family:'Cormorant Garamond',Georgia,serif; font-size:clamp(19px,2.2vw,24px); font-weight:300; font-style:italic; line-height:1.5; color:#5D5D5A; margin-bottom:36px; max-width:620px;">
+        The biggest platforms are collapsing. Millions of users are walking away. The question isn't why they failed — it's why we ever believed them.
+      </p>
+
+      <!-- Meta row -->
+      <div style="display:flex; align-items:center; gap:24px; padding-bottom:32px; border-bottom:1px solid rgba(93,93,90,0.12);">
+        <div style="display:flex; align-items:center; gap:10px;">
+          <div style="width:32px; height:32px; border-radius:50%; background:linear-gradient(135deg,#CBCEEA,#DEF1D0); flex-shrink:0;"></div>
+          <div>
+            <p style="font-size:13px; font-weight:500; color:#1C1C1A; font-family:'Inter',sans-serif; margin:0;">The World Unravelled</p>
+            <p style="font-size:12px; color:#5D5D5A; font-family:'Inter',sans-serif; margin:0;">19 March 2026</p>
+          </div>
+        </div>
+        <div style="height:16px; width:1px; background:rgba(93,93,90,0.20);"></div>
+        <span style="font-size:12px; color:#5D5D5A; font-family:'Inter',sans-serif; letter-spacing:0.03em;">4 min read</span>
+        <div style="height:16px; width:1px; background:rgba(93,93,90,0.20);"></div>
+        <span style="font-size:12px; color:#5D5D5A; font-family:'Inter',sans-serif; letter-spacing:0.03em;">878 words</span>
+      </div>
+    </div>
+
+    <!-- Header gradient band -->
+    <div style="height:5px; background:linear-gradient(90deg,#CBCEEA 0%,#F8E5E5 50%,#DEF1D0 100%);"></div>
+  </header>
+
+
+  <!-- ARTICLE BODY -->
+  <main>
+    <div class="max-w-3xl mx-auto px-6 md:px-10" style="padding-top:56px; padding-bottom:80px;">
+      <article class="article-body">
+
+        <p>Walk into any office, any bar, any family gathering and you will find people quietly deleting Tinder. Not switching to a competitor. Not upgrading their subscription. Simply leaving. Between 2023 and 2024, 1.4 million people uninstalled dating apps entirely. Tinder has shed close to 600,000 paying users since its peak. Bumble has lost 368,000, seen its stock collapse 91% from its all-time high, and was forced to sack 30% of its workforce. Match Group — the conglomerate that owns Tinder, Hinge, OkCupid, and Match.com — has reported steady revenue declines for three consecutive years and watched its share price crater from $160 to $30, vaporising tens of billions of dollars in the process.</p>
+
+        <p>The dating app era is not winding down. It is breaking apart. And the people leaving are not doing so because they found love. Many are leaving because the apps made them feel worse.</p>
+
+        <div class="pull-quote">
+          <p>"The dating app era is not winding down. It is breaking apart."</p>
+        </div>
+
+        <h2>The progressive defence: a design problem, not a structural one</h2>
+
+        <p>The mainstream view holds that dating apps were, at their core, a good idea poorly executed. They democratised access to romance — particularly for shy people, LGBTQ+ individuals in conservative areas, and those whose social circles simply didn't include eligible partners. For millions, apps provided a lifeline that simply did not exist before.</p>
+
+        <p>The critics of dating apps, this view suggests, are largely nostalgic. They imagine a golden age of "natural" meeting in bars and through friends that was never as universal or as egalitarian as they remember. The problem with Tinder was not the concept but the execution: swipe mechanics that prioritised novelty over compatibility, algorithms engineered for engagement rather than outcomes, and a subscription model that financially rewarded keeping users searching rather than helping them stop.</p>
+
+        <p>The fix, on this reading, is better design. Hinge's relative success — revenue up 26% in the final quarter of 2025 while Bumble fell 14.3% — is cited as proof. Give people meaningful prompts instead of photo carousels. Limit the number of daily likes to force intentionality. Build a "We Met" feedback loop so the algorithm actually learns what works. The problem was never apps. The problem was bad apps.</p>
+
+        <h2>The case for scepticism: they were never designed to help you leave</h2>
+
+        <p>There is a detail buried in the history of Tinder that deserves more attention than it usually gets. Jonathan Badeen, one of the app's co-founders, told a journalist that the swipe mechanic was partly inspired by a behavioural psychologist who "turned pigeons into gamblers" by dispensing food at random intervals — training the birds to peck ceaselessly, addicted to the unpredictability of the reward. Badeen was not ashamed of this. He was explaining the design logic.</p>
+
+        <div class="pull-quote">
+          <p>"The swipe mechanic was inspired by a behavioural psychologist who turned pigeons into gamblers."</p>
+        </div>
+
+        <p>That logic has now made it into a courtroom. In February 2024, a class action lawsuit was filed against Match Group alleging that Tinder, Hinge, and their sister apps were "deliberately" designed with "addictive, game-like features" to lock users into a "perpetual pay-to-play loop" that prioritised corporate profits over the relationship goals the apps claimed to serve. The lawsuit cited false advertising: Hinge markets itself as "designed to be deleted," while allegedly engineering its subscription tiers to keep users paying indefinitely.</p>
+
+        <p>The research supports the broader charge. A 2025 meta-analysis integrating data from 23 studies and more than 26,000 people found that dating app users show significantly worse outcomes across every mental health measure — more depression, more anxiety, more loneliness — than non-users. A separate longitudinal study tracking users over 12 weeks found emotional exhaustion increasing steadily over time, not diminishing. And a 2025 paper published in JMIR Formative Research found that the apps had quietly shifted their core function — from facilitating real-world meetings to maximising match accumulation, because accumulated matches generate subscription upgrades.</p>
+
+        <p>Seventy percent of dating app users, in polling, believe their app use harms their mental health. Ninety percent describe feeling addicted. These are not the numbers of a product delivering what it promises.</p>
+
+        <p>Vice President JD Vance put the political stakes plainly last year: "Dating apps are probably more destructive than we fully appreciate." His framing was typically blunt, but the underlying concern is not unreasonable. If apps are suppressing the quality and quantity of real-world dating — and the data suggests they are — then they are not neutral platforms. They are obstacles to family formation, inserted between young people and the relationships they say they want, monetising the gap.</p>
+
+        <h2>What it means for you</h2>
+
+        <p>The collapse of the swipe economy is not a tragedy. It is a correction. The market is punishing a product that was engineered to fail its users, and the users themselves are increasingly aware of it.</p>
+
+        <p>The one exception — Hinge's genuine growth — is instructive. It works, to the extent it works, because it is designed around a different incentive: get users off the app and into relationships, then use that reputation to acquire new users. That is simply a business model aligned with what people actually want, rather than one built on exploiting the gap between what people want and what they get.</p>
+
+        <p>The deeper lesson has nothing to do with apps. It is about what we outsource to algorithms and what we keep. Love, like most things worth having, is not scalable. It does not respond well to optimisation. The technology that promised to make it efficient has instead made it exhausting — and the people walking away, deleting the apps and trying something slower and harder and more human, may be ahead of the curve.</p>
+
+        <p><strong>Put the phone down. It was never going to swipe you to happiness.</strong></p>
+
+      </article>
+
+      <!-- Divider -->
+      <hr class="thin-rule" style="margin:56px 0 48px;" />
+
+      <!-- Tags -->
+      <div style="display:flex; flex-wrap:wrap; gap:8px; margin-bottom:56px;">
+        <span class="pill" style="background:rgba(222,241,208,0.35); border-color:rgba(222,241,208,0.70); color:#5D5D5A;">Culture &amp; Society</span>
+        <span class="pill" style="background:rgba(248,229,229,0.35); border-color:rgba(248,229,229,0.70); color:#5D5D5A;">Technology</span>
+        <span class="pill" style="background:rgba(203,206,234,0.30); border-color:rgba(203,206,234,0.60); color:#5D5D5A;">Gen Z</span>
+        <span class="pill" style="background:rgba(205,235,241,0.30); border-color:rgba(205,235,241,0.60); color:#5D5D5A;">Mental Health</span>
+      </div>
+
+      <!-- Subscribe CTA -->
+      <div class="card-shadow rounded-2xl overflow-hidden" style="background:linear-gradient(135deg,#CBCEEA 0%,#F8E5E5 50%,#DEF1D0 100%); padding:48px 40px; position:relative;">
+        <div style="position:absolute;inset:0;pointer-events:none;opacity:0.10;" aria-hidden="true">
+          <svg width="100%" height="100%" viewBox="0 0 600 200" preserveAspectRatio="xMidYMid slice" fill="none">
+            <circle cx="520" cy="30"  r="140" stroke="#1C1C1A" stroke-width="1" stroke-dasharray="5 4"/>
+            <circle cx="80"  cy="180" r="100" stroke="#1C1C1A" stroke-width="1" stroke-dasharray="3 6"/>
+          </svg>
+        </div>
+        <div style="position:relative; max-width:440px;">
+          <p style="font-family:'Cormorant Garamond',Georgia,serif; font-size:13px; letter-spacing:0.12em; text-transform:uppercase; color:#5D5D5A; margin-bottom:12px;">Every week</p>
+          <h3 style="font-family:'Cormorant Garamond',Georgia,serif; font-size:32px; font-weight:600; letter-spacing:-0.02em; line-height:1.15; color:#1C1C1A; margin-bottom:8px;">One story. Deeply told.</h3>
+          <p style="font-size:15px; line-height:1.70; color:#5D5D5A; font-weight:300; margin-bottom:28px;">Free, thoughtful, and always worth the read. Join 2,400+ curious minds.</p>
+          <form id="articleSignup" onsubmit="handleArticleSignup(event)" novalidate style="display:flex; gap:10px; flex-wrap:wrap;">
+            <input id="articleEmail" type="email" class="email-input" placeholder="Your email address" autocomplete="email" required style="flex:1; min-width:200px;" />
+            <button type="submit" class="cta-btn">Subscribe</button>
+          </form>
+          <p id="articleError" style="display:none; margin-top:8px; font-size:13px; color:#C0625A; font-family:'Inter',sans-serif;">Please enter a valid email address.</p>
+          <div id="articleSuccess" class="success-msg" style="margin-top:12px;">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="8.5" stroke="#5D5D5A" stroke-width="1.2"/><path d="M5.5 9.5l2.5 2.5 4.5-5" stroke="#5D5D5A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span>You're in! Check your inbox for a welcome note.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Back link -->
+      <div style="margin-top:48px; text-align:center;">
+        <a href="/" style="font-family:'Inter',sans-serif; font-size:13px; color:#5D5D5A; text-decoration:none; letter-spacing:0.04em; transition:color 0.15s;" onmouseover="this.style.color='#1C1C1A'" onmouseout="this.style.color='#5D5D5A'">
+          ← Back to The World Unravelled
+        </a>
+      </div>
+    </div>
+  </main>
+
+
+  <!-- FOOTER -->
+  <footer style="padding:40px 0 48px; border-top:1px solid rgba(93,93,90,0.10);">
+    <div class="max-w-6xl mx-auto px-6 md:px-10" style="display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:1.5rem;">
+      <div style="display:flex; align-items:center; gap:10px;">
+        <svg width="22" height="22" viewBox="0 0 28 28" fill="none" aria-hidden="true">
+          <circle cx="14" cy="14" r="12.5" stroke="#5D5D5A" stroke-width="1.5"/>
+          <ellipse cx="14" cy="14" rx="6" ry="12.5" stroke="#5D5D5A" stroke-width="1.5"/>
+          <line x1="1.5" y1="10" x2="26.5" y2="10" stroke="#5D5D5A" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="1.5" y1="18" x2="26.5" y2="18" stroke="#5D5D5A" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        <span style="font-family:'Cormorant Garamond',serif; font-weight:600; font-size:15px; color:#5D5D5A;">The World Unravelled</span>
+      </div>
+      <div style="display:flex; gap:24px;">
+        <a href="../privacy.html" class="nav-link" style="font-size:12px;">Privacy</a>
+        <a href="#" class="nav-link" style="font-size:12px;">Contact</a>
+      </div>
+      <p style="font-size:12px; color:rgba(93,93,90,0.45); font-family:'Inter',sans-serif;">© 2026 The World Unravelled. All rights reserved.</p>
+    </div>
+  </footer>
+
+
+  <script>
+    function isValidEmail(e) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e.trim()); }
+
+    async function handleArticleSignup(e) {
+      e.preventDefault();
+      const input = document.getElementById('articleEmail');
+      const error = document.getElementById('articleError');
+      const success = document.getElementById('articleSuccess');
+      const btn = e.target.querySelector('button[type="submit"]');
+
+      if (!isValidEmail(input.value)) {
+        error.style.display = 'block';
+        success.classList.remove('show');
+        input.style.borderColor = 'rgba(192,98,90,0.60)';
+        return;
+      }
+      error.style.display = 'none';
+      input.style.borderColor = 'rgba(93,93,90,0.15)';
+      btn.disabled = true;
+      btn.textContent = 'Subscribing…';
+
+      try {
+        const res = await fetch('https://beehiiv-proxy.sgarg-94.workers.dev', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: input.value.trim() })
+        });
+        if (!res.ok) throw new Error();
+        success.classList.add('show');
+        input.value = '';
+      } catch {
+        error.textContent = 'Something went wrong. Please try again.';
+        error.style.display = 'block';
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Subscribe';
+      }
+    }
+  </script>
+
+</body>
+</html>
