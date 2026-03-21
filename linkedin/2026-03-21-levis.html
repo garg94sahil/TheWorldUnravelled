@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>LinkedIn One-Pager — Levi's</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #ccc;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page {
+      width: 794px;
+      height: 1123px;
+      background: #F5F4ED;
+      margin: 40px auto;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Gradient corner blobs */
+    .blobs {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        radial-gradient(ellipse 65% 50% at 0%   0%,   rgba(203,206,234,0.50) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 40% at 100% 0%,   rgba(248,229,229,0.45) 0%, transparent 55%),
+        radial-gradient(ellipse 55% 45% at 100% 100%, rgba(222,241,208,0.40) 0%, transparent 55%),
+        radial-gradient(ellipse 45% 40% at 0%   100%, rgba(205,235,241,0.35) 0%, transparent 55%);
+    }
+
+    /* Grain */
+    .grain {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 5;
+      opacity: 0.022;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.80' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+
+    /* Doodle circles — top right */
+    .doodle {
+      position: absolute;
+      top: -20px; right: -20px;
+      width: 300px; height: 300px;
+      opacity: 0.15;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Top gradient bar */
+    .bar {
+      height: 7px;
+      flex-shrink: 0;
+      background: linear-gradient(90deg, #CBCEEA 0%, #F8E5E5 38%, #DEF1D0 72%, #CDEBF1 100%);
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Inner */
+    .inner {
+      position: relative;
+      z-index: 2;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 34px 56px 0 56px;
+    }
+
+    /* ── Eyebrow ── */
+    .eyebrow {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      color: #5D5D5A;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .eyebrow::after {
+      content: '';
+      display: block;
+      height: 1px;
+      width: 36px;
+      background: rgba(93,93,90,0.35);
+    }
+
+    /* ── Headline ── */
+    .headline {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-weight: 700;
+      font-size: 62px;
+      letter-spacing: -0.03em;
+      line-height: 0.97;
+      color: #1C1C1A;
+      margin-bottom: 16px;
+    }
+    .headline em {
+      font-style: italic;
+      color: #5D5D5A;
+    }
+
+    /* ── Subhead ── */
+    .subhead {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 18px;
+      font-weight: 400;
+      font-style: italic;
+      line-height: 1.55;
+      color: #1C1C1A;
+      margin-bottom: 22px;
+      max-width: 620px;
+    }
+
+    /* ── Stats strip ── */
+    .stats {
+      display: flex;
+      gap: 0;
+      padding: 16px 0;
+      border-top: 1px solid rgba(28,28,26,0.12);
+      border-bottom: 1px solid rgba(28,28,26,0.12);
+      margin-bottom: 22px;
+    }
+    .stat {
+      flex: 1;
+      padding-right: 18px;
+    }
+    .stat + .stat {
+      padding-left: 18px;
+      border-left: 1px solid rgba(28,28,26,0.12);
+    }
+    .stat-n {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 46px;
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      line-height: 1;
+      color: #1C1C1A;
+      margin-bottom: 4px;
+    }
+    .stat-l {
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      font-weight: 400;
+      line-height: 1.45;
+      color: #1C1C1A;
+    }
+
+    /* ── Cards label ── */
+    .cards-label {
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #5D5D5A;
+      margin-bottom: 10px;
+    }
+
+    /* ── 2×2 card grid ── */
+    .cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 11px;
+      height: 368px;
+      flex-shrink: 0;
+    }
+
+    .card {
+      border-radius: 16px;
+      padding: 20px 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .card-1 { background: rgba(248,229,229,0.55); border: 1.5px solid rgba(248,229,229,0.85); }
+    .card-2 { background: rgba(203,206,234,0.50); border: 1.5px solid rgba(203,206,234,0.80); }
+    .card-3 { background: rgba(222,241,208,0.50); border: 1.5px solid rgba(222,241,208,0.85); }
+    .card-4 { background: rgba(205,235,241,0.50); border: 1.5px solid rgba(205,235,241,0.85); }
+
+    .card-num {
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.10em;
+      color: #1C1C1A;
+      opacity: 0.40;
+    }
+    .card-title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 24px;
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      color: #1C1C1A;
+    }
+    .card-body {
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      font-weight: 400;
+      line-height: 1.65;
+      color: #1C1C1A;
+    }
+
+    /* ── URL bar ── */
+    .url-bar {
+      position: relative;
+      z-index: 6;
+      flex-shrink: 0;
+      padding: 10px 56px;
+      border-top: 1px solid rgba(28,28,26,0.10);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .url-bar a {
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      color: #5D5D5A;
+      text-decoration: none;
+    }
+    .url-dot {
+      width: 4px; height: 4px;
+      border-radius: 50%;
+      background: rgba(93,93,90,0.35);
+      flex-shrink: 0;
+    }
+    .url-label {
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      font-weight: 400;
+      color: rgba(93,93,90,0.55);
+    }
+  </style>
+</head>
+<body>
+
+<div class="page">
+  <div class="blobs"></div>
+  <div class="grain"></div>
+
+  <!-- Doodle top-right -->
+  <svg class="doodle" viewBox="0 0 300 300" fill="none">
+    <circle cx="210" cy="95"  r="185" stroke="#CBCEEA" stroke-width="1.5" stroke-dasharray="8 5"/>
+    <circle cx="210" cy="95"  r="130" stroke="#F8E5E5" stroke-width="1.2" stroke-dasharray="4 7"/>
+    <circle cx="265" cy="45"  r="60"  stroke="#DEF1D0" stroke-width="1.5" stroke-dasharray="3 5"/>
+  </svg>
+
+  <div class="bar"></div>
+
+  <div class="inner">
+
+    <div class="eyebrow">Business &nbsp;·&nbsp; 21 March 2026</div>
+
+    <h1 class="headline">
+      The World Wants<br/>to Wear <em>Levi's.</em><br/>Can Michelle Gass<br/>Deliver?
+    </h1>
+
+    <p class="subhead">
+      The denim giant is betting on women, Asia, and premium pricing —<br/>but the $10 billion prize is harder to reach than it looks.
+    </p>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-n">$6.3B</div>
+        <div class="stat-l">FY2025 revenue<br/>7% organic growth</div>
+      </div>
+      <div class="stat">
+        <div class="stat-n">60%</div>
+        <div class="stat-l">Share of revenue from<br/>international markets</div>
+      </div>
+      <div class="stat">
+        <div class="stat-n">15</div>
+        <div class="stat-l">Consecutive quarters of<br/>positive DTC comparable sales</div>
+      </div>
+    </div>
+
+    <p class="cards-label">Four things worth knowing</p>
+
+    <div class="cards">
+
+      <div class="card card-1">
+        <span class="card-num">01</span>
+        <p class="card-title">DTC pivot</p>
+        <p class="card-body">Direct-to-consumer now accounts for 50% of revenue, up from 31% three years ago. DTC grew 11% in FY2025 — the engine of the whole strategy.</p>
+      </div>
+
+      <div class="card card-2">
+        <span class="card-num">02</span>
+        <p class="card-title">The women's gap</p>
+        <p class="card-body">Women are 36% of Levi's sales but half the world's population. CEO Michelle Gass has set a clear target: 50%. The women's business grew 11% annually in FY2025.</p>
+      </div>
+
+      <div class="card card-3">
+        <span class="card-num">03</span>
+        <p class="card-title">Asia's promise</p>
+        <p class="card-body">India is Levi's 6th largest global market and #1 in Asia, with revenue up 50% vs pre-pandemic levels. Europe grew 14% in early 2025. International is now a tariff buffer.</p>
+      </div>
+
+      <div class="card card-4">
+        <span class="card-num">04</span>
+        <p class="card-title">The $10B problem</p>
+        <p class="card-body">At guided 4–5% annual growth, reaching the $10 billion target takes 15–20 years. The original 2027 deadline was quietly dropped. The strategy is right; the timeline isn't.</p>
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="url-bar">
+    <div class="url-dot"></div>
+    <a href="https://theworldunravelled.com/articles/2026-03-21-levis-global-conquest.html">theworldunravelled.com/articles/2026-03-21-levis-global-conquest.html</a>
+    <div class="url-dot"></div>
+    <span class="url-label">Read the full article</span>
+  </div>
+
+</div>
+
+</body>
+</html>

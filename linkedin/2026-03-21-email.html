@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>LinkedIn One-Pager</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #F5F4ED;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page {
+      width: 794px;
+      height: 1123px;
+      background: #F5F4ED;
+      margin: 0 auto;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Gradient corner blobs */
+    .blobs {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        radial-gradient(ellipse 65% 50% at 0%   0%,   rgba(203,206,234,0.50) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 40% at 100% 0%,   rgba(248,229,229,0.45) 0%, transparent 55%),
+        radial-gradient(ellipse 55% 45% at 100% 100%, rgba(222,241,208,0.40) 0%, transparent 55%),
+        radial-gradient(ellipse 45% 40% at 0%   100%, rgba(205,235,241,0.35) 0%, transparent 55%);
+    }
+
+    /* Grain */
+    .grain {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 5;
+      opacity: 0.022;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.80' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+
+    /* Doodle circles — top right */
+    .doodle {
+      position: absolute;
+      top: -20px; right: -20px;
+      width: 300px; height: 300px;
+      opacity: 0.15;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Top bar */
+    .bar {
+      height: 7px;
+      flex-shrink: 0;
+      background: linear-gradient(90deg, #CBCEEA 0%, #F8E5E5 38%, #DEF1D0 72%, #CDEBF1 100%);
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Inner */
+    .inner {
+      position: relative;
+      z-index: 2;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 44px 58px 0px 58px;
+    }
+
+    /* ── Eyebrow ── */
+    .eyebrow {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      color: #5D5D5A;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .eyebrow::after {
+      content: '';
+      display: block;
+      height: 1px;
+      width: 36px;
+      background: rgba(93,93,90,0.35);
+    }
+
+    /* ── Headline ── */
+    .headline {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-weight: 700;
+      font-size: 72px;
+      letter-spacing: -0.04em;
+      line-height: 0.95;
+      color: #1C1C1A;
+      margin-bottom: 16px;
+    }
+    .headline em {
+      font-style: italic;
+      color: #5D5D5A;
+    }
+
+    /* ── Subhead ── */
+    .subhead {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 21px;
+      font-weight: 400;
+      font-style: italic;
+      line-height: 1.5;
+      color: #1C1C1A;
+      margin-bottom: 24px;
+    }
+
+    /* ── Stats ── */
+    .stats {
+      display: flex;
+      gap: 0;
+      padding: 16px 0;
+      border-top: 1px solid rgba(28,28,26,0.12);
+      border-bottom: 1px solid rgba(28,28,26,0.12);
+      margin-bottom: 24px;
+    }
+    .stat {
+      flex: 1;
+      padding-right: 20px;
+    }
+    .stat + .stat {
+      padding-left: 20px;
+      border-left: 1px solid rgba(28,28,26,0.12);
+    }
+    .stat-n {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 48px;
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      line-height: 1;
+      color: #1C1C1A;
+      margin-bottom: 4px;
+    }
+    .stat-l {
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      font-weight: 400;
+      line-height: 1.45;
+      color: #1C1C1A;
+    }
+
+    /* ── Cards label ── */
+    .cards-label {
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #5D5D5A;
+      margin-bottom: 12px;
+    }
+
+    /* ── 2×2 card grid ── */
+    .cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 12px;
+      flex: 1;
+    }
+
+    .card {
+      border-radius: 16px;
+      padding: 22px 26px;
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+    }
+    .card-1 { background: rgba(203,206,234,0.55); border: 1.5px solid rgba(203,206,234,0.80); }
+    .card-2 { background: rgba(248,229,229,0.55); border: 1.5px solid rgba(248,229,229,0.85); }
+    .card-3 { background: rgba(222,241,208,0.55); border: 1.5px solid rgba(222,241,208,0.85); }
+    .card-4 { background: rgba(205,235,241,0.55); border: 1.5px solid rgba(205,235,241,0.85); }
+
+    .card-num {
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.10em;
+      color: #1C1C1A;
+      opacity: 0.40;
+    }
+    .card-title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 25px;
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      color: #1C1C1A;
+    }
+    .card-body {
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      font-weight: 400;
+      line-height: 1.65;
+      color: #1C1C1A;
+    }
+
+    /* ── URL bar ── */
+    .url-bar {
+      position: relative;
+      z-index: 2;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 58px;
+      gap: 8px;
+    }
+    .url-bar-line {
+      flex: 1;
+      height: 1px;
+      background: rgba(28,28,26,0.10);
+    }
+    .url-bar-text {
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      color: #5D5D5A;
+    }
+  </style>
+</head>
+<body>
+
+<div class="page">
+  <div class="blobs"></div>
+  <div class="grain"></div>
+
+  <!-- Doodle top-right -->
+  <svg class="doodle" viewBox="0 0 300 300" fill="none">
+    <circle cx="210" cy="95"  r="185" stroke="#CBCEEA" stroke-width="1.5" stroke-dasharray="8 5"/>
+    <circle cx="210" cy="95"  r="130" stroke="#F8E5E5" stroke-width="1.2" stroke-dasharray="4 7"/>
+    <circle cx="265" cy="45"  r="60"  stroke="#DEF1D0" stroke-width="1.5" stroke-dasharray="3 5"/>
+  </svg>
+
+  <div class="bar"></div>
+
+  <div class="inner">
+
+    <div class="eyebrow">Technology &nbsp;·&nbsp; 21 March 2026</div>
+
+    <h1 class="headline">
+      Everyone Said<br/>Email Was <em>Dead.</em><br/>They Were All Wrong.
+    </h1>
+
+    <p class="subhead">
+      The inbox isn't dying — it's becoming the<br/>command centre of the AI age.
+    </p>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-n">4.83B</div>
+        <div class="stat-l">Global email users<br/>in 2025</div>
+      </div>
+      <div class="stat">
+        <div class="stat-n">$36–$38</div>
+        <div class="stat-l">ROI per $1 spent<br/>on email marketing</div>
+      </div>
+      <div class="stat">
+        <div class="stat-n">$1.1B</div>
+        <div class="stat-l">Substack valuation<br/>after 5M paid subscribers</div>
+      </div>
+    </div>
+
+    <p class="cards-label">Four things worth knowing</p>
+
+    <div class="cards">
+
+      <div class="card card-1">
+        <span class="card-num">01</span>
+        <p class="card-title">Scale wins</p>
+        <p class="card-body">Email has 4.83 billion users — 56% of the entire global population. Slack has 38.8 million daily active users. The scale isn't even close.</p>
+      </div>
+
+      <div class="card card-2">
+        <span class="card-num">02</span>
+        <p class="card-title">AI's home base</p>
+        <p class="card-body">Google, Grammarly, Notion, and Yahoo all made email their top AI investment in 2025. The inbox is the richest structured dataset of your professional life.</p>
+      </div>
+
+      <div class="card card-3">
+        <span class="card-num">03</span>
+        <p class="card-title">You own it</p>
+        <p class="card-body">Email is the only channel no platform can take from you. When Meta shut down Workplace, every conversation vanished overnight. That can't happen to your inbox.</p>
+      </div>
+
+      <div class="card card-4">
+        <span class="card-num">04</span>
+        <p class="card-title">Newsletters are booming</p>
+        <p class="card-body">Substack hit $1.1B valuation on 5M paid subscribers. Beehiiv serves 350M monthly readers. People aren't just tolerating email — they're paying for it.</p>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- URL bar -->
+  <div class="url-bar">
+    <div class="url-bar-line"></div>
+    <span class="url-bar-text">theworldunravelled.com/articles/2026-03-21-long-live-email.html</span>
+    <div class="url-bar-line"></div>
+  </div>
+
+</div>
+
+</body>
+</html>
