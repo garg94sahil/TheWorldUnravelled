@@ -75,7 +75,7 @@
       flex: 1;
       display: flex;
       flex-direction: column;
-      padding: 44px 58px 0px 58px;
+      padding: 34px 56px 0 56px;
     }
 
     /* ── Eyebrow ── */
@@ -103,9 +103,9 @@
     .headline {
       font-family: 'Cormorant Garamond', Georgia, serif;
       font-weight: 700;
-      font-size: 72px;
-      letter-spacing: -0.04em;
-      line-height: 0.95;
+      font-size: 62px;
+      letter-spacing: -0.03em;
+      line-height: 0.97;
       color: #1C1C1A;
       margin-bottom: 16px;
     }
@@ -117,12 +117,13 @@
     /* ── Subhead ── */
     .subhead {
       font-family: 'Cormorant Garamond', Georgia, serif;
-      font-size: 21px;
+      font-size: 18px;
       font-weight: 400;
       font-style: italic;
-      line-height: 1.5;
+      line-height: 1.55;
       color: #1C1C1A;
-      margin-bottom: 24px;
+      margin-bottom: 22px;
+      max-width: 620px;
     }
 
     /* ── Stats ── */
@@ -132,19 +133,19 @@
       padding: 16px 0;
       border-top: 1px solid rgba(28,28,26,0.12);
       border-bottom: 1px solid rgba(28,28,26,0.12);
-      margin-bottom: 24px;
+      margin-bottom: 22px;
     }
     .stat {
       flex: 1;
-      padding-right: 20px;
+      padding-right: 18px;
     }
     .stat + .stat {
-      padding-left: 20px;
+      padding-left: 18px;
       border-left: 1px solid rgba(28,28,26,0.12);
     }
     .stat-n {
       font-family: 'Cormorant Garamond', Georgia, serif;
-      font-size: 48px;
+      font-size: 46px;
       font-weight: 700;
       letter-spacing: -0.04em;
       line-height: 1;
@@ -167,7 +168,7 @@
       letter-spacing: 0.12em;
       text-transform: uppercase;
       color: #5D5D5A;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
     }
 
     /* ── 2×2 card grid ── */
@@ -175,16 +176,17 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
       grid-template-rows: 1fr 1fr;
-      gap: 12px;
-      flex: 1;
+      gap: 11px;
+      height: 368px;
+      flex-shrink: 0;
     }
 
     .card {
       border-radius: 16px;
-      padding: 22px 26px;
+      padding: 20px 22px;
       display: flex;
       flex-direction: column;
-      gap: 9px;
+      gap: 8px;
     }
     .card-1 { background: rgba(203,206,234,0.55); border: 1.5px solid rgba(203,206,234,0.80); }
     .card-2 { background: rgba(248,229,229,0.55); border: 1.5px solid rgba(248,229,229,0.85); }
@@ -257,7 +259,7 @@
 
   <div class="inner">
 
-    <div class="eyebrow">Technology &nbsp;·&nbsp; 21 March 2026</div>
+    <div class="eyebrow">Technology &nbsp;·&nbsp; March 2026</div>
 
     <h1 class="headline">
       Everyone Said<br/>Email Was <em>Dead.</em><br/>They Were All Wrong.
