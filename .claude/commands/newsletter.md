@@ -132,7 +132,7 @@ Create a **single A4 page** (`linkedin/YYYY-MM-DD-slug.html` → `linkedin/YYYY-
 4. Stat strip — exactly 3 key numbers (Cormorant ~46px) with short labels (Inter 12px), separated by dividers
 5. Section label ("Four things worth knowing", Inter 10px small-caps)
 6. **4 insight cards in a 2×2 grid** — each card has: number (14px), bold title (22px serif), single short paragraph (Inter 13px). Cards use the brand pastels as background fills (lavender, blush, sage, sky)
-7. Thin URL bar at the bottom: "Read the full story" label left, full article URL right
+7. Bottom padding — no URL bar, no article link
 
 **Readability rules — non-negotiable:**
 - Minimum body font size: 13px Inter — never smaller
@@ -157,7 +157,7 @@ const puppeteer = require('C:/Users/sgarg/AppData/Local/Temp/puppeteer-install/n
   const page = await browser.newPage();
   await page.setViewport({ width: 794, height: 1123, deviceScaleFactor: 2 });
   await page.goto('file:///PATH_TO_HTML', { waitUntil: 'networkidle0' });
-  await page.pdf({ path: 'PATH_TO_PDF', format: 'A4', printBackground: true, margin: { top:'0', right:'0', bottom:'0', left:'0' } });
+  await page.pdf({ path: 'PATH_TO_PDF', format: 'A4', printBackground: true, pageRanges: '1', margin: { top:'0', right:'0', bottom:'0', left:'0' } });
   await page.screenshot({ path: 'PATH_TO_PREVIEW_PNG', clip: { x:0, y:40, width:794, height:1123 } });
   await browser.close();
 })();
